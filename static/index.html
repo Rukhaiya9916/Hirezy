@@ -1,0 +1,2433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skillora | AI Resume Screening & Job Matching System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0b0f19;
+      --bg-secondary: #111827;
+      --bg-card: rgba(17, 24, 39, 0.75);
+      --bg-card-hover: rgba(30, 41, 59, 0.85);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(99, 102, 241, 0.5);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --accent: #6366f1;
+      --accent-glow: rgba(99, 102, 241, 0.25);
+      --accent-secondary: #38bdf8;
+      --success: #10b981;
+      --success-glow: rgba(16, 185, 129, 0.2);
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+      --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+      --shadow-glow: 0 0 35px rgba(99, 102, 241, 0.15);
+      --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      font-family: var(--font-main);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 10%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 85% 25%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 50% 80%, rgba(16, 185, 129, 0.06) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: var(--font-main);
+      cursor: pointer;
+      border: none;
+      outline: none;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Navbar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      background: rgba(11, 15, 25, 0.85);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .nav-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1.45rem;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #6366f1, #38bdf8);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    .brand-logo-icon svg {
+      width: 20px;
+      height: 20px;
+      fill: #fff;
+    }
+
+    .brand-text span {
+      background: linear-gradient(135deg, #fff, #cbd5e1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-tag {
+      font-size: 0.7rem;
+      background: rgba(99, 102, 241, 0.15);
+      color: #818cf8;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      font-weight: 500;
+      transition: color 0.2s, background 0.2s;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .ai-status-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      color: #34d399;
+      font-weight: 600;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--success);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--success);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 60px 0 30px;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      color: #a5b4fc;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .hero h1 {
+      font-size: 3.2rem;
+      font-weight: 800;
+      letter-spacing: -1.2px;
+      line-height: 1.15;
+      margin-bottom: 18px;
+      background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, #818cf8 0%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto 30px;
+    }
+
+    /* Bias-Aware Screening Banner */
+    .bias-banner {
+      background: linear-gradient(90deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8));
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-left: 4px solid var(--accent-secondary);
+      border-radius: var(--radius-md);
+      padding: 14px 20px;
+      max-width: 900px;
+      margin: 0 auto 40px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      text-align: left;
+    }
+
+    .bias-icon {
+      font-size: 1.3rem;
+      color: var(--accent-secondary);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .bias-title {
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: #e2e8f0;
+      margin-bottom: 2px;
+    }
+
+    .bias-desc {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    /* Cards & Sections */
+    .section-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      margin-bottom: 36px;
+      box-shadow: var(--shadow-md);
+      position: relative;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .section-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-icon {
+      width: 40px;
+      height: 40px;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      color: #818cf8;
+    }
+
+    .section-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -0.4px;
+    }
+
+    .section-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    /* Resume Upload Grid */
+    .resume-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .resume-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+      .nav-links {
+        display: none;
+      }
+    }
+
+    /* Upload Zone */
+    .dropzone {
+      border: 2px dashed rgba(99, 102, 241, 0.35);
+      background: rgba(15, 23, 42, 0.5);
+      border-radius: var(--radius-md);
+      padding: 32px 20px;
+      text-align: center;
+      transition: all 0.25s ease;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .dropzone:hover, .dropzone.dragover {
+      border-color: #818cf8;
+      background: rgba(99, 102, 241, 0.08);
+      box-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
+    }
+
+    .dropzone-icon {
+      width: 52px;
+      height: 52px;
+      background: rgba(99, 102, 241, 0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: #818cf8;
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    /* Text Preview & Fallback */
+    .resume-textarea-wrap {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .resume-textarea {
+      width: 100%;
+      height: 220px;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      color: var(--text-main);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .resume-textarea:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 2px var(--accent-glow);
+    }
+
+    .sample-resumes-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .sample-label {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+    }
+
+    .btn-sample {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #cbd5e1;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      transition: all 0.2s;
+    }
+
+    .btn-sample:hover {
+      background: rgba(99, 102, 241, 0.2);
+      border-color: #818cf8;
+      color: #fff;
+    }
+
+    /* Primary Buttons */
+    .btn-primary {
+      background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 12px 24px;
+      border-radius: var(--radius-sm);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(79, 70, 229, 0.5);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: #e2e8f0;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-weight: 600;
+      font-size: 0.88rem;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+    }
+
+    .btn-accent {
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38bdf8;
+      font-weight: 600;
+      font-size: 0.82rem;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-accent:hover {
+      background: rgba(56, 189, 248, 0.25);
+      color: #fff;
+    }
+
+    /* Jobs Grid */
+    .jobs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 20px;
+    }
+
+    .job-card {
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    .job-card:hover {
+      border-color: rgba(99, 102, 241, 0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    }
+
+    .job-card.active-selected {
+      border-color: #6366f1;
+      background: rgba(99, 102, 241, 0.08);
+      box-shadow: 0 0 25px rgba(99, 102, 241, 0.2);
+    }
+
+    .job-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .job-role-info h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .job-company {
+      font-size: 0.86rem;
+      color: var(--accent-secondary);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .job-meta {
+      display: flex;
+      gap: 12px;
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+
+    /* Score Badge */
+    .score-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      background: rgba(30, 41, 59, 0.8);
+      border: 2px solid #334155;
+      font-weight: 800;
+      font-size: 1.25rem;
+      line-height: 1;
+    }
+
+    .score-badge span {
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    .score-high {
+      border-color: var(--success);
+      color: #34d399;
+      background: rgba(16, 185, 129, 0.12);
+    }
+
+    .score-med {
+      border-color: var(--warning);
+      color: #fbbf24;
+      background: rgba(245, 158, 11, 0.12);
+    }
+
+    .score-low {
+      border-color: #64748b;
+      color: #cbd5e1;
+      background: rgba(100, 116, 139, 0.12);
+    }
+
+    .job-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin: 12px 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Skill Chips */
+    .skills-block {
+      margin-bottom: 16px;
+    }
+
+    .skills-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      font-weight: 700;
+      color: var(--text-dim);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .chips-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .chip {
+      font-size: 0.74rem;
+      padding: 3px 9px;
+      border-radius: 6px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .chip-match {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #34d399;
+    }
+
+    .chip-miss {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      color: #f87171;
+    }
+
+    .chip-pref {
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #7dd3fc;
+    }
+
+    /* Selected Job Workspace & AI Hub */
+    .active-job-banner {
+      background: linear-gradient(135deg, rgba(30, 27, 75, 0.6), rgba(15, 23, 42, 0.8));
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .active-job-details h2 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .active-job-details p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .feature-tabs {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 12px;
+    }
+
+    .tab-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tab-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      border-color: #6366f1;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* AI Analysis Result Cards */
+    .analysis-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .analysis-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .info-card {
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 20px;
+    }
+
+    .info-card h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #e2e8f0;
+    }
+
+    .info-list {
+      list-style: none;
+    }
+
+    .info-list li {
+      position: relative;
+      padding-left: 20px;
+      margin-bottom: 10px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .info-list li::before {
+      content: "•";
+      position: absolute;
+      left: 6px;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    /* Skill Proof Engine */
+    .proof-challenge-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .challenge-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .challenge-type {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--accent-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .challenge-difficulty {
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .challenge-question {
+      font-size: 0.95rem;
+      color: #fff;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .challenge-details {
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      border-left: 3px solid #6366f1;
+    }
+
+    /* Learning Roadmap Timeline */
+    .timeline {
+      position: relative;
+      padding-left: 30px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      bottom: 10px;
+      width: 2px;
+      background: linear-gradient(180deg, #6366f1, #38bdf8);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    .timeline-node {
+      position: absolute;
+      left: -26px;
+      top: 4px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #6366f1;
+      border: 3px solid #0b0f19;
+      box-shadow: 0 0 10px #6366f1;
+    }
+
+    .timeline-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 20px;
+    }
+
+    /* Suggestion Card */
+    .suggestion-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .suggestion-category {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #818cf8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+
+    .suggestion-example {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      margin-top: 10px;
+      color: #93c5fd;
+    }
+
+    /* Analytics Dashboard */
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .analytics-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .stat-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #fff;
+      margin-top: 6px;
+      background: linear-gradient(135deg, #fff, #93c5fd);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 700;
+    }
+
+    /* Loading Spinner */
+    .spinner-wrap {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 14px;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .spinner {
+      width: 42px;
+      height: 42px;
+      border: 3px solid rgba(99, 102, 241, 0.2);
+      border-top-color: #6366f1;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .spinner-text {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+    }
+
+    /* Empty States */
+    .empty-state {
+      text-align: center;
+      padding: 48px 20px;
+      color: var(--text-dim);
+    }
+
+    .empty-state-icon {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+      opacity: 0.6;
+    }
+
+    /* Rejection Card */
+    .rejection-item {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--warning);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      margin-bottom: 14px;
+    }
+
+    /* Question Accordion */
+    .qa-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      margin-bottom: 14px;
+    }
+
+    .qa-badge {
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-weight: 700;
+      text-transform: uppercase;
+      display: inline-block;
+      margin-bottom: 6px;
+    }
+
+    .badge-tech { background: rgba(99, 102, 241, 0.15); color: #818cf8; }
+    .badge-proj { background: rgba(56, 189, 248, 0.15); color: #38bdf8; }
+    .badge-behav { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+    .badge-job { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-color);
+      padding: 30px 0;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      margin-top: 60px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container nav-wrapper">
+      <div class="brand">
+        <div class="brand-logo-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="brand-text">
+          <span>SKILLORA</span>
+        </div>
+        <span class="brand-tag">AI Powered</span>
+      </div>
+
+      <ul class="nav-links">
+        <li><a href="#dashboard" class="nav-link active">Dashboard</a></li>
+        <li><a href="#resume-section" class="nav-link">Resume</a></li>
+        <li><a href="#jobs-section" class="nav-link">Job Matches</a></li>
+        <li><a href="#ai-hub-section" class="nav-link">Skill Gap & AI</a></li>
+        <li><a href="#analytics-section" class="nav-link">Analytics</a></li>
+      </ul>
+
+      <div class="ai-status-badge" id="aiStatusBadge">
+        <span class="status-dot"></span>
+        <span id="aiStatusText">AI Ready</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="container" id="dashboard">
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-badge">⚡ Next-Gen Career Screening Engine</div>
+      <h1>Turn Your Resume Into Your <span>Career Roadmap</span></h1>
+      <p>AI-powered resume screening, job matching, transparent skill gap analysis, and automated interview coaching.</p>
+
+      <!-- Bias-Aware Screening Statement -->
+      <div class="bias-banner">
+        <div class="bias-icon">⚖️</div>
+        <div>
+          <div class="bias-title">Bias-Aware Screening Guarantee</div>
+          <div class="bias-desc">
+            Skillora focuses screening on job-relevant qualifications such as skills, experience, education and projects rather than sensitive personal attributes.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 1: Resume Upload -->
+    <section class="section-card" id="resume-section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <div class="section-icon">📄</div>
+          <div>
+            <h2 class="section-title">Resume Input & Text Extraction</h2>
+            <div class="section-desc">Upload a PDF resume or paste text directly. Privacy guaranteed: files are never stored permanently.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="resume-grid">
+        <!-- PDF Dropzone -->
+        <div>
+          <div class="dropzone" id="dropzone" onclick="document.getElementById('fileInput').click()">
+            <div class="dropzone-icon">📥</div>
+            <div>
+              <div style="font-weight: 700; color: #fff; margin-bottom: 4px;">Click or Drag & Drop PDF Resume</div>
+              <div style="font-size: 0.8rem; color: var(--text-dim);">Supported format: .pdf (Max 10MB)</div>
+            </div>
+            <input type="file" id="fileInput" class="file-input" accept=".pdf">
+            <button type="button" class="btn-secondary" style="margin-top: 6px;">Select PDF File</button>
+          </div>
+
+          <div style="margin-top: 14px; display: flex; align-items: center; justify-content: space-between;">
+            <span id="uploadStatusText" style="font-size: 0.82rem; color: var(--text-dim);">No PDF uploaded yet</span>
+            <button id="btnExtractPdf" class="btn-secondary" style="display: none;">Parse PDF</button>
+          </div>
+        </div>
+
+        <!-- Extracted Text Area & Sample Loaders -->
+        <div class="resume-textarea-wrap">
+          <textarea id="resumeText" class="resume-textarea" placeholder="Extracted resume text appears here. You can also paste or edit your resume text directly..."></textarea>
+          
+          <div class="sample-resumes-wrap">
+            <span class="sample-label">1-Click Test Samples:</span>
+            <button type="button" class="btn-sample" onclick="loadSampleResume('fullstack')">Full Stack Dev</button>
+            <button type="button" class="btn-sample" onclick="loadSampleResume('python_ai')">Python & AI Engineer</button>
+            <button type="button" class="btn-sample" onclick="loadSampleResume('data_analyst')">Data Analyst</button>
+            <button type="button" class="btn-sample" onclick="loadSampleResume('devops')">DevOps Engineer</button>
+          </div>
+
+          <div style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center;">
+            <span id="charCountLabel" style="font-size: 0.8rem; color: var(--text-dim);">0 characters</span>
+            <button id="btnMatchJobs" class="btn-primary" onclick="matchJobs()" disabled>
+              <span>Find Matching Jobs</span> 🔍
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Spinner -->
+      <div id="resumeSpinner" class="spinner-wrap">
+        <div class="spinner"></div>
+        <div class="spinner-text" id="resumeSpinnerText">Extracting resume text...</div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: Top Matching Jobs -->
+    <section class="section-card" id="jobs-section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <div class="section-icon">🎯</div>
+          <div>
+            <h2 class="section-title">Top Matching Jobs</h2>
+            <div class="section-desc">Practical deterministic skill matching against active industry openings.</div>
+          </div>
+        </div>
+        <div id="jobsEvaluatedBadge" style="font-size: 0.82rem; color: var(--text-muted);">Evaluated: 0 jobs</div>
+      </div>
+
+      <!-- Spinner -->
+      <div id="matchSpinner" class="spinner-wrap">
+        <div class="spinner"></div>
+        <div class="spinner-text">Matching resume against job database...</div>
+      </div>
+
+      <!-- Jobs Grid -->
+      <div id="jobsList" class="jobs-grid">
+        <div class="empty-state" style="grid-column: 1 / -1;">
+          <div class="empty-state-icon">💼</div>
+          <div style="font-weight: 600; color: #cbd5e1; margin-bottom: 6px;">No Jobs Matched Yet</div>
+          <div>Upload your resume or pick a 1-click test sample above, then click <strong>"Find Matching Jobs"</strong>.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: Selected Job & AI Feature Hub -->
+    <section class="section-card" id="ai-hub-section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <div class="section-icon">🧠</div>
+          <div>
+            <h2 class="section-title">Skill Gap & AI Career Suite</h2>
+            <div class="section-desc">Select a job above to unlock deep Gemini AI analysis, personalized roadmaps, and interview coaching.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Job Overview Banner -->
+      <div id="activeJobBanner" class="active-job-banner" style="display: none;">
+        <div class="active-job-details">
+          <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.6px; color: #818cf8; font-weight: 700;">Currently Analyzing Target Role</span>
+          <h2 id="activeJobTitle">Frontend Developer</h2>
+          <p id="activeJobMeta">TechNova Labs • Bengaluru • Experience: 1-3 years</p>
+        </div>
+        <div>
+          <button id="btnDeepAnalyze" class="btn-primary" style="font-size: 0.88rem; padding: 10px 18px;">
+            <span>Run Deep AI Evaluation</span> 🚀
+          </button>
+        </div>
+      </div>
+
+      <!-- Tabs Navigation -->
+      <div class="feature-tabs" id="featureTabs">
+        <button class="tab-btn active" onclick="switchTab('tab-skill-gaps')">📊 Skill Gap Analysis</button>
+        <button class="tab-btn" onclick="switchTab('tab-ai-analysis')">🤖 AI Match Breakdown</button>
+        <button class="tab-btn" onclick="switchTab('tab-skill-proof')">🧪 Skill Proof Engine</button>
+        <button class="tab-btn" onclick="switchTab('tab-roadmap')">🗺️ Learning Roadmap</button>
+        <button class="tab-btn" onclick="switchTab('tab-improve-resume')">✍️ Resume Improvement</button>
+        <button class="tab-btn" onclick="switchTab('tab-rejection')">🛡️ Rejection Analyzer</button>
+        <button class="tab-btn" onclick="switchTab('tab-interview')">🎙️ AI Interview Prep</button>
+      </div>
+
+      <!-- Spinner for AI Hub -->
+      <div id="aiHubSpinner" class="spinner-wrap">
+        <div class="spinner"></div>
+        <div class="spinner-text" id="aiHubSpinnerText">Processing request with Gemini AI...</div>
+      </div>
+
+      <!-- TAB 1: Skill Gap Analysis -->
+      <div id="tab-skill-gaps" class="tab-content active">
+        <div class="analysis-grid">
+          <!-- Your Skills -->
+          <div class="info-card">
+            <h4><span style="color: #34d399;">✓</span> Your Matching Skills</h4>
+            <div id="matchingSkillsChips" class="chips-wrap">
+              <span style="color: var(--text-dim); font-size: 0.85rem;">Select a job to view matching competencies.</span>
+            </div>
+          </div>
+
+          <!-- Missing Skills -->
+          <div class="info-card">
+            <h4><span style="color: #f87171;">✕</span> Missing / Gap Skills</h4>
+            <div id="missingSkillsChips" class="chips-wrap">
+              <span style="color: var(--text-dim); font-size: 0.85rem;">Select a job to view missing competencies.</span>
+            </div>
+          </div>
+
+          <!-- Priority Skills Breakdown -->
+          <div class="info-card">
+            <h4>🔥 High Priority Growth Areas</h4>
+            <div id="highPriorityList" class="chips-wrap">
+              <span style="color: var(--text-dim); font-size: 0.85rem;">High priority core skills will populate here.</span>
+            </div>
+          </div>
+
+          <!-- Preferred / Bonus Skills -->
+          <div class="info-card">
+            <h4>⭐ Medium Priority / Preferred Skills</h4>
+            <div id="mediumPriorityList" class="chips-wrap">
+              <span style="color: var(--text-dim); font-size: 0.85rem;">Preferred secondary skills will populate here.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: AI Match Breakdown -->
+      <div id="tab-ai-analysis" class="tab-content">
+        <div id="aiAnalysisContainer">
+          <div class="empty-state">
+            <div class="empty-state-icon">🤖</div>
+            <div style="font-weight: 600; color: #cbd5e1; margin-bottom: 6px;">AI Match Breakdown Idle</div>
+            <div>Select a job above and click <strong>"Run Deep AI Evaluation"</strong> to generate a multi-dimensional assessment.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: Skill Proof Engine -->
+      <div id="tab-skill-proof" class="tab-content">
+        <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+          <input type="text" id="skillProofInput" placeholder="Enter any skill (e.g. Python, React, Docker, SQL)..." 
+                 style="background: rgba(15, 23, 42, 0.7); border: 1px solid var(--border-color); color: #fff; padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.9rem; flex-grow: 1; max-width: 400px;">
+          <button id="btnGenerateSkillProof" class="btn-primary" style="font-size: 0.88rem; padding: 10px 18px;">
+            <span>Generate Proof Challenges</span> 🧪
+          </button>
+        </div>
+
+        <div id="skillProofContainer">
+          <div class="empty-state">
+            <div class="empty-state-icon">🧪</div>
+            <div style="font-weight: 600; color: #cbd5e1; margin-bottom: 6px;">No Skill Proof Active</div>
+            <div>Enter a skill above or click on any skill chip to generate 4 objective testing challenges.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: Learning Roadmap -->
+      <div id="tab-roadmap" class="tab-content">
+        <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+          <div style="font-size: 0.9rem; color: var(--text-muted);" id="roadmapRoleLabel">Generate a step-by-step curriculum to close detected skill gaps.</div>
+          <button id="btnGenerateRoadmap" class="btn-primary" style="font-size: 0.88rem; padding: 9px 16px;">
+            <span>Build Roadmap</span> 🗺️
+          </button>
+        </div>
+
+        <div id="roadmapContainer">
+          <div class="empty-state">
+            <div class="empty-state-icon">🗺️</div>
+            <div style="font-weight: 600; color: #cbd5e1; margin-bottom: 6px;">No Roadmap Generated Yet</div>
+            <div>Click <strong>"Build Roadmap"</strong> to synthesize a 6-week curriculum tailored to your missing skills.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 5: Resume Improvement Suggestions -->
+      <div id="tab-improve-resume" class="tab-content">
+        <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+          <div style="font-size: 0.9rem; color: var(--text-muted);">Actionable critique to improve ATS formatting and quantifiable impact (zero fake achievements).</div>
+          <button id="btnImproveResume" class="btn-primary" style="font-size: 0.88rem; padding: 9px 16px;">
+            <span>Analyze Resume Improvements</span> ✍️
+          </button>
+        </div>
+
+        <div id="improveResumeContainer">
+          <div class="empty-state">
+            <div class="empty-state-icon">✍️</div>
+            <div style="font-weight: 600; color: #cbd5e1; margin-bottom: 6px;">No Suggestions Generated Yet</div>
+            <div>Click <strong>"Analyze Resume Improvements"</strong> to receive recruiter-grade before/after rewrites.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 6: Rejection Analyzer -->
+      <div id="tab-rejection" class="tab-content">
+        <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+          <div style="font-size: 0.9rem; color: var(--text-muted);">Audit automated screening risks and discover mitigation steps.</div>
+          <button id="btnAuditRejection" class="btn-primary" style="font-size: 0.88rem; padding: 9px 16px;">
+            <span>Audit Screening Risks</span> 🛡️
+          </button>
+        </div>
+
+        <div id="rejectionContainer">
+          <div class="empty-state">
+            <div class="empty-state-icon">🛡️</div>
+            <div style="font-weight: 600; color: #cbd5e1; margin-bottom: 6px;">Screening Audit Idle</div>
+            <div>Click <strong>"Audit Screening Risks"</strong> to identify algorithmic filter concerns.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 7: AI Interview Prep -->
+      <div id="tab-interview" class="tab-content">
+        <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+          <div style="font-size: 0.9rem; color: var(--text-muted);">Generates 3 Technical, 2 Project, 2 Behavioral, and 2 Job-Specific interview questions.</div>
+          <button id="btnGenerateInterview" class="btn-primary" style="font-size: 0.88rem; padding: 9px 16px;">
+            <span>Generate Interview Loop</span> 🎙️
+          </button>
+        </div>
+
+        <div id="interviewContainer">
+          <div class="empty-state">
+            <div class="empty-state-icon">🎙️</div>
+            <div style="font-weight: 600; color: #cbd5e1; margin-bottom: 6px;">Interview Loop Not Generated</div>
+            <div>Click <strong>"Generate Interview Loop"</strong> for a personalized simulated technical screen.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: Screening Analytics Dashboard -->
+    <section class="section-card" id="analytics-section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <div class="section-icon">📈</div>
+          <div>
+            <h2 class="section-title">Screening Analytics & Transparency</h2>
+            <div class="section-desc">Aggregate telemetry of evaluated jobs and objective screening data.</div>
+          </div>
+        </div>
+        <button id="btnRefreshAnalytics" class="btn-secondary" style="font-size: 0.82rem;">
+          <span>Refresh Data</span> 🔄
+        </button>
+      </div>
+
+      <div class="analytics-grid">
+        <div class="stat-card">
+          <div class="stat-label">Jobs Analyzed</div>
+          <div class="stat-number" id="statJobsAnalyzed">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Average Match Score</div>
+          <div class="stat-number" id="statAvgScore">0%</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Top Matching Skill</div>
+          <div class="stat-number" id="statTopMatch" style="font-size: 1.25rem; font-weight: 700; margin-top: 12px;">None</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Most Common Skill Gap</div>
+          <div class="stat-number" id="statTopGap" style="font-size: 1.25rem; font-weight: 700; margin-top: 12px; color: #f87171;">None</div>
+        </div>
+      </div>
+
+      <div class="info-card" style="margin-top: 20px;">
+        <h4>Recent Analysis History (SQLite)</h4>
+        <div id="recentRecordsList" style="margin-top: 10px; font-size: 0.85rem; color: var(--text-muted);">
+          No analysis records saved in SQLite database yet.
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div><strong>SKILLORA</strong> &bull; AI Resume Screening and Job Matching System &bull; College Hackathon 2026</div>
+      <div style="margin-top: 6px; font-size: 0.78rem; color: var(--text-dim);">
+        Skillora focuses screening on job-relevant qualifications such as skills, experience, education and projects rather than sensitive personal attributes.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Vanilla JavaScript -->
+  <script>
+    // State management
+    const state = {
+      resumeText: "",
+      jobs: [],
+      selectedJob: null,
+      aiAnalysis: null,
+      activeTab: "tab-skill-gaps"
+    };
+
+    // Pre-canned Sample Resumes for instant 1-click evaluation
+    const SAMPLE_RESUMES = {
+      fullstack: `ALEX RIVERA
+Full Stack Software Developer
+Email: alex.rivera@example.com | GitHub: github.com/alexrivera | Bengaluru, India
+
+PROFESSIONAL SUMMARY
+Dynamic Full Stack Developer with 2+ years of hands-on experience designing responsive web applications and REST APIs using JavaScript, React, Node.js, HTML, CSS, and SQL. Built scalable frontend components and integrated backend microservices with Docker and Git.
+
+CORE TECHNICAL SKILLS
+- Languages: JavaScript, Python, HTML, CSS, SQL
+- Frameworks & Libraries: React, Node.js, Express, Tailwind CSS
+- Databases & Storage: PostgreSQL, MongoDB, Redis
+- Tools & Cloud: Git, Docker, REST APIs, Linux, Postman
+
+EXPERIENCE
+Software Engineer | NexaTech Systems (2024 - Present)
+- Architected and shipped 6 core web interfaces in React and Redux, improving user engagement by 24%.
+- Developed high-performance REST APIs in Node.js and Express connected to PostgreSQL.
+- Containerized development environments using Docker and automated Git branching workflows.
+
+PROJECTS
+- E-Commerce Developer Platform: Built end-to-end platform with React, Node.js, and MongoDB featuring JWT authentication and Stripe checkout.
+- Task Analytics Dashboard: Created responsive data dashboard in JavaScript and CSS consuming REST APIs.`,
+
+      python_ai: `PRIYA SHARMA
+AI & Machine Learning Engineer
+Email: priya.sharma@example.com | Bengaluru, India
+
+SUMMARY
+AI Engineer with strong background in Python, Machine Learning, Generative AI, and LLM orchestration. Experienced in building RAG pipelines, deploying REST APIs using FastAPI, and data manipulation using Pandas, NumPy, and Scikit-Learn.
+
+SKILLS
+- Languages: Python, SQL, Bash
+- AI / ML: Machine Learning, Deep Learning, Generative AI, LLMs, Scikit-Learn, PyTorch, Vector Databases
+- Web & APIs: FastAPI, REST APIs, Git, Docker, Linux
+- Data: Pandas, NumPy, Data Visualization
+
+EXPERIENCE
+Machine Learning Engineer | Apex AI Labs (2024 - Present)
+- Engineered enterprise retrieval-augmented generation (RAG) system using LLMs and Vector Databases.
+- Fine-tuned open-source transformer models with PyTorch, achieving a 15% improvement in semantic search precision.
+- Built low-latency FastAPI endpoints to serve machine learning models to 50k monthly active users.`,
+
+      data_analyst: `ROHAN DESHMUKH
+Data Analyst & BI Specialist
+Email: rohan.deshmukh@example.com | Mumbai, India
+
+SUMMARY
+Detail-oriented Data Analyst with experience in SQL, Python, Excel, Statistics, and Data Visualization. Adept at turning complex transactional data into actionable business intelligence dashboards and strategic reporting pipelines.
+
+SKILLS
+- Analytics: SQL, Excel (Advanced, Pivot, Macros), Statistics, Data Analysis
+- BI & Viz: Data Visualization, Power BI, Tableau, Reporting
+- Programming: Python, Pandas, Documentation, Communication
+
+EXPERIENCE
+Junior Data Analyst | Insight Metrics (2024 - Present)
+- Formulated complex SQL queries across multi-million record PostgreSQL databases for weekly churn analysis.
+- Built 12 interactive Power BI and Tableau dashboards for senior leadership.
+- Conducted statistical hypothesis testing and A/B test analysis to evaluate marketing campaign conversion rates.`,
+
+      devops: `VIKRAM MENON
+DevOps & Cloud Engineer
+Email: vikram.menon@example.com | Hyderabad, India
+
+SUMMARY
+DevOps Engineer with expertise in Linux, Docker, Kubernetes, CI/CD pipelines, and cloud computing. Passionate about automating software delivery, maintaining high availability, and optimizing cloud costs.
+
+SKILLS
+- Cloud & Containers: Docker, Kubernetes, Cloud Computing, AWS
+- Systems & Scripting: Linux, Bash, Git, Python
+- CI/CD & Operations: CI/CD, Terraform, Prometheus, Microservices
+
+EXPERIENCE
+Associate DevOps Engineer | CloudStream (2024 - Present)
+- Automated deployment workflows using GitHub Actions CI/CD pipelines, cutting release cycle time by 40%.
+- Managed containerized Kubernetes clusters running 20+ microservices in Docker.
+- Implemented automated infrastructure monitoring using Prometheus and Grafana.`
+    };
+
+    // DOM Elements
+    const dropzone = document.getElementById("dropzone");
+    const fileInput = document.getElementById("fileInput");
+    const resumeText = document.getElementById("resumeText");
+    const charCountLabel = document.getElementById("charCountLabel");
+    const btnMatchJobs = document.getElementById("btnMatchJobs");
+    const uploadStatusText = document.getElementById("uploadStatusText");
+    const resumeSpinner = document.getElementById("resumeSpinner");
+    const resumeSpinnerText = document.getElementById("resumeSpinnerText");
+    const jobsList = document.getElementById("jobsList");
+    const matchSpinner = document.getElementById("matchSpinner");
+    const jobsEvaluatedBadge = document.getElementById("jobsEvaluatedBadge");
+    const activeJobBanner = document.getElementById("activeJobBanner");
+    const activeJobTitle = document.getElementById("activeJobTitle");
+    const activeJobMeta = document.getElementById("activeJobMeta");
+    const btnDeepAnalyze = document.getElementById("btnDeepAnalyze");
+    const aiHubSpinner = document.getElementById("aiHubSpinner");
+    const aiHubSpinnerText = document.getElementById("aiHubSpinnerText");
+    const aiStatusText = document.getElementById("aiStatusText");
+
+    // Initialize
+    window.addEventListener("DOMContentLoaded", () => {
+      checkAiStatus();
+      loadAnalytics();
+      setupEventListeners();
+    });
+
+    function setupEventListeners() {
+      // Resume textarea input
+      if (resumeText) {
+        resumeText.addEventListener("input", () => {
+          updateResumeState(resumeText.value);
+        });
+      }
+
+      // File input
+      if (fileInput) {
+        fileInput.addEventListener("change", (e) => {
+          if (e.target.files && e.target.files[0]) {
+            uploadPdf(e.target.files[0]);
+          }
+        });
+      }
+
+      // Drag and drop
+      if (dropzone) {
+        dropzone.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          dropzone.classList.add("dragover");
+        });
+
+        dropzone.addEventListener("dragleave", () => {
+          dropzone.classList.remove("dragover");
+        });
+
+        dropzone.addEventListener("drop", (e) => {
+          e.preventDefault();
+          dropzone.classList.remove("dragover");
+          if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+            uploadPdf(e.dataTransfer.files[0]);
+          }
+        });
+      }
+
+      // Match jobs button event listener
+      if (btnMatchJobs) {
+        btnMatchJobs.addEventListener("click", (e) => {
+          e.preventDefault();
+          matchJobs();
+        });
+      }
+
+      // Deep AI analysis button
+      if (btnDeepAnalyze) {
+        btnDeepAnalyze.addEventListener("click", (e) => {
+          e.preventDefault();
+          if (state.selectedJob) {
+            runDeepAiAnalysis(state.selectedJob);
+          }
+        });
+      }
+
+      // Tab buttons
+      const btnProof = document.getElementById("btnGenerateSkillProof");
+      if (btnProof) {
+        btnProof.addEventListener("click", () => {
+          const input = document.getElementById("skillProofInput");
+          const skill = input ? input.value.trim() : "";
+          if (skill) {
+            loadSkillProof(skill);
+          } else {
+            alert("Please enter a skill to test.");
+          }
+        });
+      }
+
+      const btnRoadmap = document.getElementById("btnGenerateRoadmap");
+      if (btnRoadmap) {
+        btnRoadmap.addEventListener("click", () => {
+          generateRoadmap();
+        });
+      }
+
+      const btnImprove = document.getElementById("btnImproveResume");
+      if (btnImprove) {
+        btnImprove.addEventListener("click", () => {
+          improveResume();
+        });
+      }
+
+      const btnRejection = document.getElementById("btnAuditRejection");
+      if (btnRejection) {
+        btnRejection.addEventListener("click", () => {
+          auditRejection();
+        });
+      }
+
+      const btnInterview = document.getElementById("btnGenerateInterview");
+      if (btnInterview) {
+        btnInterview.addEventListener("click", () => {
+          generateInterviewQuestions();
+        });
+      }
+
+      const btnAnalytics = document.getElementById("btnRefreshAnalytics");
+      if (btnAnalytics) {
+        btnAnalytics.addEventListener("click", () => {
+          loadAnalytics();
+        });
+      }
+    }
+
+    function updateResumeState(text) {
+      state.resumeText = text || "";
+      const trimmed = state.resumeText.trim();
+      const length = trimmed.length;
+      if (charCountLabel) {
+        charCountLabel.innerText = `${length.toLocaleString()} characters`;
+      }
+      if (btnMatchJobs) {
+        btnMatchJobs.disabled = length === 0;
+      }
+    }
+
+    function loadSampleResume(type) {
+      if (SAMPLE_RESUMES[type]) {
+        const text = SAMPLE_RESUMES[type];
+        if (resumeText) {
+          resumeText.value = text;
+        }
+        updateResumeState(text);
+        if (uploadStatusText) {
+          uploadStatusText.innerText = `Loaded sample: ${type.replace('_', ' ').toUpperCase()}`;
+          uploadStatusText.style.color = "#38bdf8";
+        }
+      }
+    }
+
+    // PDF Upload
+    async function uploadPdf(file) {
+      if (!file.name.toLowerCase().endsWith(".pdf")) {
+        alert("Please select a PDF file.");
+        return;
+      }
+
+      if (uploadStatusText) {
+        uploadStatusText.innerText = `Uploading & parsing: ${file.name}...`;
+        uploadStatusText.style.color = "#fbbf24";
+      }
+      if (resumeSpinner) resumeSpinner.style.display = "flex";
+      if (resumeSpinnerText) resumeSpinnerText.innerText = `Extracting text from ${file.name}...`;
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        const response = await fetch("/api/extract-resume", {
+          method: "POST",
+          body: formData
+        });
+
+        const data = await response.json();
+        if (resumeSpinner) resumeSpinner.style.display = "none";
+
+        if (data.success && data.text) {
+          if (resumeText) resumeText.value = data.text;
+          updateResumeState(data.text);
+          if (uploadStatusText) {
+            uploadStatusText.innerText = `✓ Successfully extracted ${data.character_count} chars from ${file.name}`;
+            uploadStatusText.style.color = "#34d399";
+          }
+          // Automatically trigger job matching
+          matchJobs();
+        } else {
+          if (uploadStatusText) {
+            uploadStatusText.innerText = `Extraction issue: ${data.message || 'Check PDF format.'}`;
+            uploadStatusText.style.color = "#f87171";
+          }
+          alert(data.message || "Failed to extract text from PDF. Please paste your resume text in the text area.");
+        }
+      } catch (err) {
+        if (resumeSpinner) resumeSpinner.style.display = "none";
+        if (uploadStatusText) {
+          uploadStatusText.innerText = "Error uploading PDF.";
+          uploadStatusText.style.color = "#f87171";
+        }
+        console.error("PDF upload error:", err);
+      }
+    }
+
+    // Check Gemini AI Status
+    async function checkAiStatus() {
+      try {
+        const res = await fetch("/api/ai/test");
+        const data = await res.json();
+        if (data.success && aiStatusText) {
+          aiStatusText.innerText = `Gemini AI Connected (${data.model || 'Active'})`;
+        } else if (aiStatusText) {
+          aiStatusText.innerText = "AI Fallback Active";
+          aiStatusText.style.color = "#fbbf24";
+        }
+      } catch (e) {
+        if (aiStatusText) {
+          aiStatusText.innerText = "AI Offline";
+          aiStatusText.style.color = "#f87171";
+        }
+      }
+    }
+
+    // Deterministic Job Matching
+    async function matchJobs() {
+      // Sync state from textarea if needed
+      if (!state.resumeText || !state.resumeText.trim()) {
+        state.resumeText = (resumeText && resumeText.value) ? resumeText.value : "";
+      }
+      const trimmed = state.resumeText.trim();
+      if (!trimmed) {
+        alert("Please provide resume text first.");
+        return;
+      }
+
+      if (matchSpinner) matchSpinner.style.display = "flex";
+      if (jobsList) jobsList.innerHTML = "";
+
+      try {
+        const response = await fetch("/api/match-jobs", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ resume_text: trimmed })
+        });
+
+        const data = await response.json();
+        if (matchSpinner) matchSpinner.style.display = "none";
+
+        if (data.success && data.jobs) {
+          state.jobs = data.jobs;
+          if (jobsEvaluatedBadge) {
+            jobsEvaluatedBadge.innerText = `Evaluated: ${data.total_jobs_evaluated} jobs`;
+          }
+          renderJobs(data.jobs);
+
+          // Auto-select first matching job
+          if (data.jobs.length > 0) {
+            selectJob(data.jobs[0].id);
+          }
+        } else if (jobsList) {
+          jobsList.innerHTML = `<div class="empty-state" style="grid-column: 1 / -1;"><div class="empty-state-icon">⚠️</div><div>${data.message || 'No matching positions found.'}</div></div>`;
+        }
+      } catch (err) {
+        if (matchSpinner) matchSpinner.style.display = "none";
+        if (jobsList) {
+          jobsList.innerHTML = `<div class="empty-state" style="grid-column: 1 / -1;"><div class="empty-state-icon">❌</div><div>Error connecting to server. Please retry.</div></div>`;
+        }
+        console.error("Match jobs error:", err);
+      }
+    }
+
+    // Render Job Cards
+    function renderJobs(jobs) {
+      if (!jobsList) return;
+      jobsList.innerHTML = "";
+
+      jobs.forEach((job) => {
+        const scoreClass = job.match_score >= 70 ? "score-high" : (job.match_score >= 40 ? "score-med" : "score-low");
+        const isSelected = state.selectedJob && state.selectedJob.id === job.id;
+
+        const card = document.createElement("div");
+        card.className = `job-card ${isSelected ? 'active-selected' : ''}`;
+        card.id = `job-card-${job.id}`;
+
+        const matchingChips = (job.matching_skills || []).map(s => `<span class="chip chip-match">✓ ${escapeHtml(s)}</span>`).join("");
+        const missingChips = (job.missing_skills || []).map(s => `<span class="chip chip-miss">✕ ${escapeHtml(s)}</span>`).join("");
+
+        card.innerHTML = `
+          <div>
+            <div class="job-card-top">
+              <div class="job-role-info">
+                <h3>${escapeHtml(job.title)}</h3>
+                <div class="job-company">${escapeHtml(job.company)}</div>
+                <div class="job-meta">
+                  <span>📍 ${escapeHtml(job.location)}</span>
+                  <span>⏳ ${escapeHtml(job.experience)}</span>
+                </div>
+              </div>
+              <div class="score-badge ${scoreClass}">
+                ${job.match_score}%
+                <span>MATCH</span>
+              </div>
+            </div>
+
+            <p class="job-desc">${escapeHtml(job.description || '')}</p>
+
+            <div class="skills-block">
+              <div class="skills-label">
+                <span>Matching Skills (${(job.matching_skills || []).length})</span>
+              </div>
+              <div class="chips-wrap">
+                ${matchingChips || '<span style="font-size: 0.75rem; color: var(--text-dim);">No direct skill match</span>'}
+              </div>
+            </div>
+
+            <div class="skills-block">
+              <div class="skills-label">
+                <span>Missing Skills (${(job.missing_skills || []).length})</span>
+              </div>
+              <div class="chips-wrap">
+                ${missingChips || '<span style="font-size: 0.75rem; color: var(--text-dim);">All required skills found</span>'}
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top: 14px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 14px;">
+            <button class="btn-primary" style="font-size: 0.82rem; padding: 8px 14px;" onclick="selectJob(${job.id})">
+              <span>Select & Analyze</span> 🎯
+            </button>
+            <span style="font-size: 0.75rem; color: var(--text-dim);">${job.matched_required_count || 0}/${job.total_required || 0} Required</span>
+          </div>
+        `;
+
+        jobsList.appendChild(card);
+      });
+    }
+
+    // Select a Job for Analysis
+    function selectJob(jobId) {
+      const job = state.jobs.find(j => j.id === jobId);
+      if (!job) return;
+
+      state.selectedJob = job;
+
+      // Update card active classes
+      document.querySelectorAll(".job-card").forEach(el => el.classList.remove("active-selected"));
+      const cardEl = document.getElementById(`job-card-${jobId}`);
+      if (cardEl) cardEl.classList.add("active-selected");
+
+      // Update active banner
+      if (activeJobBanner) activeJobBanner.style.display = "flex";
+      if (activeJobTitle) activeJobTitle.innerText = `${job.title} (${job.match_score}% Match)`;
+      if (activeJobMeta) activeJobMeta.innerText = `${job.company} • ${job.location} • Experience: ${job.experience}`;
+      const roadmapLabel = document.getElementById("roadmapRoleLabel");
+      if (roadmapLabel) {
+        roadmapLabel.innerText = `Curriculum tailored for: ${job.title} at ${job.company}`;
+      }
+
+      // Populate Skill Gap Tab
+      renderSkillGaps(job);
+
+      // Default input in skill proof
+      const proofInput = document.getElementById("skillProofInput");
+      if (proofInput) {
+        if (job.missing_skills && job.missing_skills.length > 0) {
+          proofInput.value = job.missing_skills[0];
+        } else if (job.matching_skills && job.matching_skills.length > 0) {
+          proofInput.value = job.matching_skills[0];
+        }
+      }
+
+      // Automatically trigger deep AI analysis
+      runDeepAiAnalysis(job);
+    }
+
+    // Render Skill Gap Analysis
+    function renderSkillGaps(job) {
+      const matchWrap = document.getElementById("matchingSkillsChips");
+      const missWrap = document.getElementById("missingSkillsChips");
+      const highWrap = document.getElementById("highPriorityList");
+      const medWrap = document.getElementById("mediumPriorityList");
+
+      if (matchWrap) {
+        matchWrap.innerHTML = (job.matching_skills || []).map(s => `
+          <span class="chip chip-match" style="cursor: pointer;" onclick="loadSkillProof('${escapeHtml(s)}')">
+            ✓ ${escapeHtml(s)} <small style="opacity: 0.7; margin-left: 2px;">🧪</small>
+          </span>
+        `).join("") || '<span style="color: var(--text-dim); font-size: 0.85rem;">None</span>';
+      }
+
+      if (missWrap) {
+        missWrap.innerHTML = (job.missing_skills || []).map(s => `
+          <span class="chip chip-miss" style="cursor: pointer;" onclick="loadSkillProof('${escapeHtml(s)}')">
+            ✕ ${escapeHtml(s)} <small style="opacity: 0.7; margin-left: 2px;">🧪</small>
+          </span>
+        `).join("") || '<span style="color: var(--text-dim); font-size: 0.85rem;">None</span>';
+      }
+
+      // High priority skills (missing required skills)
+      if (highWrap) {
+        highWrap.innerHTML = (job.missing_skills || []).slice(0, 3).map(s => `
+          <span class="chip chip-miss" style="cursor: pointer;" onclick="loadSkillProof('${escapeHtml(s)}')">
+            🔥 ${escapeHtml(s)} (Core Requirement)
+          </span>
+        `).join("") || '<span style="color: #34d399; font-size: 0.85rem;">No critical gaps detected!</span>';
+      }
+
+      // Medium priority / Preferred skills
+      if (medWrap) {
+        medWrap.innerHTML = ((job.missing_skills || []).slice(3)).map(s => `
+          <span class="chip chip-pref" style="cursor: pointer;" onclick="loadSkillProof('${escapeHtml(s)}')">
+            ⚡ ${escapeHtml(s)}
+          </span>
+        `).join("") || '<span style="color: var(--text-dim); font-size: 0.85rem;">All secondary skills covered</span>';
+      }
+    }
+
+    // Run Deep Gemini AI Analysis
+    async function runDeepAiAnalysis(job) {
+      if (aiHubSpinner) {
+        aiHubSpinner.style.display = "flex";
+        if (aiHubSpinnerText) {
+          aiHubSpinnerText.innerText = `Evaluating qualification for ${job.title} with Gemini AI...`;
+        }
+      }
+
+      try {
+        const res = await fetch("/api/analyze", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            resume_text: state.resumeText,
+            job: job
+          })
+        });
+
+        const data = await res.json();
+        if (aiHubSpinner) aiHubSpinner.style.display = "none";
+
+        if (data.success) {
+          state.aiAnalysis = data;
+          renderAiAnalysis(data, job);
+          switchTab("tab-ai-analysis");
+          loadAnalytics(); // Refresh SQLite analytics
+        }
+      } catch (e) {
+        if (aiHubSpinner) aiHubSpinner.style.display = "none";
+        console.error("AI analysis error:", e);
+      }
+    }
+
+    function renderAiAnalysis(data, job) {
+      const container = document.getElementById("aiAnalysisContainer");
+      if (!container) return;
+
+      container.innerHTML = `
+        <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 24px; margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <span style="font-size: 0.75rem; text-transform: uppercase; color: #818cf8; font-weight: 700;">Target Role Evaluation</span>
+              <h3 style="font-size: 1.3rem; font-weight: 800; color: #fff;">${escapeHtml(job.title)} &bull; ${escapeHtml(job.company)}</h3>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div class="score-badge ${(data.match_score || 0) >= 70 ? 'score-high' : 'score-med'}">
+                ${data.match_score || 0}%
+                <span>AI FIT</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="background: rgba(0, 0, 0, 0.25); border-left: 3px solid #38bdf8; padding: 12px 16px; border-radius: var(--radius-sm); margin-bottom: 20px; font-size: 0.88rem; color: #cbd5e1;">
+            <strong>Experience Alignment:</strong> ${escapeHtml(data.experience_match || 'Relevant foundational qualifications identified.')}
+          </div>
+
+          <div class="analysis-grid">
+            <div class="info-card">
+              <h4>⚠️ Key Screening Gaps</h4>
+              <ul class="info-list">
+                ${(data.gaps || []).map(g => `<li>${escapeHtml(g)}</li>`).join("")}
+              </ul>
+            </div>
+
+            <div class="info-card">
+              <h4>💡 Strategic Recommendations</h4>
+              <ul class="info-list">
+                ${(data.recommendations || []).map(r => `<li>${escapeHtml(r)}</li>`).join("")}
+              </ul>
+            </div>
+          </div>
+
+          <div style="margin-top: 16px; font-size: 0.76rem; color: var(--text-dim); text-align: right;">
+            🛡️ Bias-Audit Note: ${escapeHtml(data.bias_audit_note || 'Screened strictly on objective skills & experience.')}
+          </div>
+        </div>
+      `;
+    }
+
+    // Skill Proof Engine
+    async function loadSkillProof(skillName) {
+      switchTab("tab-skill-proof");
+      const input = document.getElementById("skillProofInput");
+      if (input) input.value = skillName;
+
+      if (aiHubSpinner) {
+        aiHubSpinner.style.display = "flex";
+        if (aiHubSpinnerText) {
+          aiHubSpinnerText.innerText = `Generating rigorous verification challenges for '${skillName}'...`;
+        }
+      }
+
+      try {
+        const res = await fetch("/api/skill-proof", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ skill: skillName })
+        });
+
+        const data = await res.json();
+        if (aiHubSpinner) aiHubSpinner.style.display = "none";
+
+        if (data.success && data.challenges) {
+          renderSkillProof(data.skill, data.challenges);
+        }
+      } catch (e) {
+        if (aiHubSpinner) aiHubSpinner.style.display = "none";
+        console.error("Skill proof error:", e);
+      }
+    }
+
+    function renderSkillProof(skill, challenges) {
+      const container = document.getElementById("skillProofContainer");
+      if (!container) return;
+
+      container.innerHTML = `
+        <div style="margin-bottom: 16px;">
+          <span style="font-size: 0.78rem; text-transform: uppercase; color: #38bdf8; font-weight: 700;">Skill Proof Engine Assessment</span>
+          <h3 style="font-size: 1.25rem; font-weight: 800; color: #fff;">Verification Suite: ${escapeHtml(skill)}</h3>
+        </div>
+      `;
+
+      (challenges || []).forEach((c) => {
+        const card = document.createElement("div");
+        card.className = "proof-challenge-card";
+        card.innerHTML = `
+          <div class="challenge-header">
+            <span class="challenge-type">${escapeHtml(c.type || 'Challenge')}</span>
+            <span class="challenge-difficulty">${escapeHtml(c.difficulty || 'Intermediate')}</span>
+          </div>
+          <div class="challenge-question">${escapeHtml(c.question || '')}</div>
+          <div class="challenge-details">
+            <div style="font-weight: 600; color: #a5b4fc; margin-bottom: 4px;">Evaluation Criteria:</div>
+            <div style="margin-bottom: 8px;">${escapeHtml(c.evaluation_criteria || '')}</div>
+            <div style="font-weight: 600; color: #34d399; margin-bottom: 4px;">Sample Benchmark Outline:</div>
+            <div>${escapeHtml(c.sample_answer_outline || '')}</div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Learning Roadmap
+    async function generateRoadmap() {
+      if (!state.selectedJob) {
+        alert("Please select a target job first.");
+        return;
+      }
+
+      if (aiHubSpinner) {
+        aiHubSpinner.style.display = "flex";
+        if (aiHubSpinnerText) {
+          aiHubSpinnerText.innerText = `Synthesizing personalized learning roadmap for ${state.selectedJob.title}...`;
+        }
+      }
+
+      try {
+        const res = await fetch("/api/roadmap", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            resume_text: state.resumeText,
+            missing_skills: state.selectedJob.missing_skills || [],
+            target_role: state.selectedJob.title
+          })
+        });
+
+        const data = await res.json();
+        if (aiHubSpinner) aiHubSpinner.style.display = "none";
+
+        if (data.success) {
+          renderRoadmap(data);
+        }
+      } catch (e) {
+        if (aiHubSpinner) aiHubSpinner.style.display = "none";
+        console.error("Roadmap error:", e);
+      }
+    }
+
+    function renderRoadmap(data) {
+      const container = document.getElementById("roadmapContainer");
+      if (!container) return;
+
+      container.innerHTML = `
+        <div style="margin-bottom: 24px;">
+          <h3 style="font-size: 1.25rem; font-weight: 800; color: #fff;">${escapeHtml(data.target_role)} Roadmap</h3>
+          <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 4px;">${escapeHtml(data.summary)}</p>
+        </div>
+        <div class="timeline">
+          ${(data.phases || []).map(p => `
+            <div class="timeline-item">
+              <div class="timeline-node"></div>
+              <div class="timeline-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                  <span style="font-weight: 800; color: #fff; font-size: 1rem;">${escapeHtml(p.phase || '')}</span>
+                  <span style="font-size: 0.75rem; background: rgba(99, 102, 241, 0.2); color: #a5b4fc; padding: 2px 8px; border-radius: 999px;">${escapeHtml(p.timeframe || '')}</span>
+                </div>
+                <div style="margin-bottom: 10px;">
+                  ${(p.focus_skills || []).map(s => `<span class="chip chip-pref" style="margin-right: 4px;">${escapeHtml(s)}</span>`).join("")}
+                </div>
+                <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">
+                  <strong>Objectives:</strong> ${(p.learning_objectives || []).map(o => escapeHtml(o)).join(" &bull; ")}
+                </div>
+                <div style="background: rgba(0, 0, 0, 0.25); border-radius: 6px; padding: 10px; font-size: 0.82rem; color: #93c5fd; margin-top: 8px;">
+                  <strong>🛠️ Capstone Deliverable:</strong> ${escapeHtml(p.hands_on_project || '')}
+                </div>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    // Resume Improvement Suggestions
+    async function improveResume() {
+      if (!state.resumeText || !state.resumeText.trim()) {
+        alert("Please provide resume text first.");
+        return;
+      }
+
+      if (aiHubSpinner) {
+        aiHubSpinner.style.display = "flex";
+        if (aiHubSpinnerText) {
+          aiHubSpinnerText.innerText = "Analyzing resume impact, metrics, and formatting...";
+        }
+      }
+
+      try {
+        const res = await fetch("/api/improve-resume", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            resume_text: state.resumeText,
+            target_role: state.selectedJob ? state.selectedJob.title : ""
+          })
+        });
+
+        const data = await res.json();
+        if (aiHubSpinner) aiHubSpinner.style.display = "none";
+
+        if (data.success) {
+          renderImproveResume(data);
+        }
+      } catch (e) {
+        if (aiHubSpinner) aiHubSpinner.style.display = "none";
+        console.error("Resume improvement error:", e);
+      }
+    }
+
+    function renderImproveResume(data) {
+      const container = document.getElementById("improveResumeContainer");
+      if (!container) return;
+
+      container.innerHTML = `
+        <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <div>
+              <h3 style="font-size: 1.15rem; font-weight: 800; color: #fff;">ATS & Impact Critique</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">${escapeHtml(data.overall_critique || '')}</p>
+            </div>
+            <div class="score-badge score-med">
+              ${data.formatting_score || 75}%
+              <span>ATS FIT</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 14px;">
+            <div style="font-size: 0.78rem; text-transform: uppercase; color: var(--text-dim); font-weight: 700; margin-bottom: 6px;">Recommended Industry Keywords to Feature:</div>
+            <div class="chips-wrap">
+              ${(data.key_keywords_to_add || []).map(k => `<span class="chip chip-pref">+ ${escapeHtml(k)}</span>`).join("")}
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 16px;">
+          <h4 style="font-size: 0.95rem; font-weight: 700; color: #e2e8f0; margin-bottom: 12px;">Actionable Rewrites & Structural Guidance:</h4>
+          ${(data.suggestions || []).map(s => `
+            <div class="suggestion-card">
+              <div class="suggestion-category">${escapeHtml(s.category || '')}</div>
+              <div style="font-size: 0.88rem; color: #f87171; margin-bottom: 4px;"><strong>Issue:</strong> ${escapeHtml(s.current_issue || '')}</div>
+              <div style="font-size: 0.88rem; color: #34d399; margin-bottom: 6px;"><strong>Actionable Fix:</strong> ${escapeHtml(s.actionable_fix || '')}</div>
+              <div class="suggestion-example"><strong>Rewrite Example:</strong><br>${escapeHtml(s.example || '')}</div>
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    // Rejection Analyzer
+    async function auditRejection() {
+      if (!state.selectedJob) {
+        alert("Please select a target job first.");
+        return;
+      }
+
+      if (aiHubSpinner) {
+        aiHubSpinner.style.display = "flex";
+        if (aiHubSpinnerText) {
+          aiHubSpinnerText.innerText = "Auditing screening filters and algorithmic blockers...";
+        }
+      }
+
+      try {
+        const res = await fetch("/api/rejection-analyzer", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            resume_text: state.resumeText,
+            job_title: state.selectedJob.title,
+            job_description: state.selectedJob.description || "",
+            match_analysis: state.selectedJob
+          })
+        });
+
+        const data = await res.json();
+        if (aiHubSpinner) aiHubSpinner.style.display = "none";
+
+        if (data.success) {
+          renderRejection(data);
+        }
+      } catch (e) {
+        if (aiHubSpinner) aiHubSpinner.style.display = "none";
+        console.error("Rejection analyzer error:", e);
+      }
+    }
+
+    function renderRejection(data) {
+      const container = document.getElementById("rejectionContainer");
+      if (!container) return;
+
+      const riskClass = data.risk_level === "High" ? "score-low" : (data.risk_level === "Moderate" ? "score-med" : "score-high");
+
+      container.innerHTML = `
+        <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <div>
+              <span style="font-size: 0.75rem; text-transform: uppercase; color: #fbbf24; font-weight: 700;">Screening Risk Audit</span>
+              <h3 style="font-size: 1.15rem; font-weight: 800; color: #fff;">Algorithmic Screening Profile</h3>
+            </div>
+            <span style="padding: 4px 14px; border-radius: 999px; font-weight: 800; font-size: 0.85rem;" class="${riskClass}">
+              ${escapeHtml(data.risk_level || 'MODERATE').toUpperCase()} RISK
+            </span>
+          </div>
+          <div style="font-size: 0.82rem; color: var(--text-dim); background: rgba(0, 0, 0, 0.25); padding: 10px 14px; border-radius: 6px;">
+            ℹ️ ${escapeHtml(data.disclaimer || 'Possible screening concerns include the following points.')}
+          </div>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <h4 style="font-size: 0.95rem; font-weight: 700; color: #e2e8f0; margin-bottom: 12px;">Possible Screening Friction Points:</h4>
+          ${(data.screening_concerns || []).map(c => `
+            <div class="rejection-item">
+              <div style="font-size: 0.8rem; font-weight: 700; color: #fbbf24; margin-bottom: 4px;">${escapeHtml(c.concern_area || '')}</div>
+              <div style="font-size: 0.88rem; color: #fff; margin-bottom: 6px;">${escapeHtml(c.possible_concern || '')}</div>
+              <div style="font-size: 0.84rem; color: #34d399;"><strong>Mitigation Action:</strong> ${escapeHtml(c.mitigation_strategy || '')}</div>
+            </div>
+          `).join("")}
+        </div>
+
+        <div class="analysis-grid">
+          <div class="info-card">
+            <h4>📄 ATS Formatting Guardrails</h4>
+            <ul class="info-list">
+              ${(data.ats_formatting_risks || []).map(r => `<li>${escapeHtml(r)}</li>`).join("")}
+            </ul>
+          </div>
+
+          <div class="info-card">
+            <h4>🚀 Immediate Strategic Fixes</h4>
+            <ul class="info-list">
+              ${(data.recommended_fixes || []).map(f => `<li>${escapeHtml(f)}</li>`).join("")}
+            </ul>
+          </div>
+        </div>
+      `;
+    }
+
+    // Interview Questions
+    async function generateInterviewQuestions() {
+      if (!state.selectedJob) {
+        alert("Please select a target job first.");
+        return;
+      }
+
+      if (aiHubSpinner) {
+        aiHubSpinner.style.display = "flex";
+        if (aiHubSpinnerText) {
+          aiHubSpinnerText.innerText = `Generating customized interview loop for ${state.selectedJob.title}...`;
+        }
+      }
+
+      try {
+        const res = await fetch("/api/interview-questions", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            resume_text: state.resumeText,
+            job_title: state.selectedJob.title,
+            job_description: state.selectedJob.description || ""
+          })
+        });
+
+        const data = await res.json();
+        if (aiHubSpinner) aiHubSpinner.style.display = "none";
+
+        if (data.success) {
+          renderInterviewQuestions(data);
+        }
+      } catch (e) {
+        if (aiHubSpinner) aiHubSpinner.style.display = "none";
+        console.error("Interview questions error:", e);
+      }
+    }
+
+    function renderInterviewQuestions(data) {
+      const container = document.getElementById("interviewContainer");
+      if (!container) return;
+
+      container.innerHTML = `
+        <div style="margin-bottom: 16px;">
+          <span style="font-size: 0.78rem; text-transform: uppercase; color: #818cf8; font-weight: 700;">Simulated Technical Screen</span>
+          <h3 style="font-size: 1.25rem; font-weight: 800; color: #fff;">Interview Loop: ${escapeHtml(data.job_title || 'Target Role')}</h3>
+        </div>
+      `;
+
+      const all = [
+        ...(data.technical_questions || []).map(q => ({ ...q, type: 'Technical', badge: 'badge-tech' })),
+        ...(data.project_questions || []).map(q => ({ ...q, type: 'Project Experience', badge: 'badge-proj' })),
+        ...(data.behavioral_questions || []).map(q => ({ ...q, type: 'Behavioral & Leadership', badge: 'badge-behav' })),
+        ...(data.job_specific_questions || []).map(q => ({ ...q, type: 'Job-Specific', badge: 'badge-job' }))
+      ];
+
+      all.forEach((item, index) => {
+        const card = document.createElement("div");
+        card.className = "qa-card";
+        card.innerHTML = `
+          <div>
+            <span class="qa-badge ${item.badge}">${item.type}</span>
+            <div style="font-weight: 700; font-size: 0.96rem; color: #fff; margin-bottom: 8px;">
+              ${index + 1}. ${escapeHtml(item.question || '')}
+            </div>
+            <div style="font-size: 0.82rem; color: var(--text-dim); margin-bottom: 10px;">
+              <strong>Interviewer Intent:</strong> ${escapeHtml(item.context_or_intent || '')}
+            </div>
+            <div style="background: rgba(0, 0, 0, 0.25); border-radius: 6px; padding: 10px 12px; font-size: 0.84rem; color: #93c5fd;">
+              <strong>Suggested Talking Points:</strong>
+              <ul style="margin-top: 4px; padding-left: 18px;">
+                ${(item.suggested_talking_points || []).map(p => `<li>${escapeHtml(p)}</li>`).join("")}
+              </ul>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Analytics Dashboard
+    async function loadAnalytics() {
+      try {
+        const res = await fetch("/api/analytics");
+        const data = await res.json();
+        if (data.success) {
+          const elCount = document.getElementById("statJobsAnalyzed");
+          const elAvg = document.getElementById("statAvgScore");
+          const elTop = document.getElementById("statTopMatch");
+          const elGap = document.getElementById("statTopGap");
+
+          if (elCount) elCount.innerText = data.jobs_analyzed;
+          if (elAvg) elAvg.innerText = `${data.average_match_score}%`;
+          if (elTop) elTop.innerText = data.top_matching_skill;
+          if (elGap) elGap.innerText = data.most_common_skill_gap;
+
+          const recList = document.getElementById("recentRecordsList");
+          if (recList) {
+            if (data.recent_records && data.recent_records.length > 0) {
+              recList.innerHTML = data.recent_records.map(r => `
+                <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+                  <span><strong>${escapeHtml(r.job_title)}</strong> (Match: ${r.match_score}%)</span>
+                  <span style="color: var(--text-dim); font-size: 0.78rem;">${escapeHtml(r.timestamp)}</span>
+                </div>
+              `).join("");
+            } else {
+              recList.innerHTML = '<span style="color: var(--text-dim);">No analysis records saved in SQLite database yet.</span>';
+            }
+          }
+        }
+      } catch (e) {
+        console.error("Analytics load error:", e);
+      }
+    }
+
+    // Tab switcher
+    function switchTab(tabId) {
+      state.activeTab = tabId;
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+
+      const targetContent = document.getElementById(tabId);
+      if (targetContent) targetContent.classList.add("active");
+
+      // Match button styling
+      const buttons = document.querySelectorAll(".tab-btn");
+      buttons.forEach(b => {
+        if (b.getAttribute("onclick") && b.getAttribute("onclick").includes(tabId)) {
+          b.classList.add("active");
+        }
+      });
+    }
+
+    // Helper: HTML escaping
+    function escapeHtml(str) {
+      if (!str) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+  </script>
+</body>
+</html>

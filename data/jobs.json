@@ -1,0 +1,152 @@
+[
+  {
+    "id": 1,
+    "title": "Frontend Developer",
+    "company": "TechNova Labs",
+    "location": "Bengaluru (Hybrid)",
+    "experience": "1-3 years",
+    "description": "Build responsive, accessible web interfaces for our SaaS analytics platform. You will work closely with designers and backend engineers to ship pixel-perfect, performant UI components and improve our design system.",
+    "required_skills": ["JavaScript", "React", "HTML", "CSS", "REST APIs", "Git"],
+    "preferred_skills": ["TypeScript", "Redux", "Next.js", "Tailwind CSS", "Jest"]
+  },
+  {
+    "id": 2,
+    "title": "Backend Developer",
+    "company": "CloudCore",
+    "location": "Remote",
+    "experience": "2-4 years",
+    "description": "Design and maintain scalable backend services and APIs that power our cloud infrastructure dashboard. You will own services end-to-end, from data model to deployment, with a strong focus on reliability and observability.",
+    "required_skills": ["Python", "FastAPI", "REST APIs", "PostgreSQL", "Docker", "Git"],
+    "preferred_skills": ["Redis", "Celery", "AWS", "Kubernetes"]
+  },
+  {
+    "id": 3,
+    "title": "Full Stack Developer",
+    "company": "CodeCraft",
+    "location": "Hyderabad",
+    "experience": "1-3 years",
+    "description": "Work across the stack on our modern developer tools platform: React frontends, Node.js and Python APIs, and relational databases. Ideal for engineers who enjoy owning features from database to browser.",
+    "required_skills": ["JavaScript", "React", "Node.js", "HTML", "CSS", "SQL", "Git"],
+    "preferred_skills": ["TypeScript", "Docker", "MongoDB", "Express", "AWS"]
+  },
+  {
+    "id": 4,
+    "title": "Python Developer",
+    "company": "DataSphere",
+    "location": "Pune",
+    "experience": "0-2 years",
+    "description": "Develop data processing scripts, automated pipelines, and internal tools in Python. You will clean, transform, and move data between services and expose results through clean microservice APIs.",
+    "required_skills": ["Python", "SQL", "Pandas", "REST APIs", "Git"],
+    "preferred_skills": ["FastAPI", "NumPy", "Docker", "PostgreSQL", "Linux"]
+  },
+  {
+    "id": 5,
+    "title": "Data Analyst",
+    "company": "InsightGrid",
+    "location": "Mumbai",
+    "experience": "0-2 years",
+    "description": "Turn raw business data into actionable dashboards and insights for enterprise clients. You will write complex SQL queries, build automated reporting pipelines, and present findings to key stakeholders.",
+    "required_skills": ["SQL", "Excel", "Data Visualization", "Statistics", "Python"],
+    "preferred_skills": ["Power BI", "Tableau", "Pandas", "A/B Testing", "Reporting"]
+  },
+  {
+    "id": 6,
+    "title": "Data Scientist",
+    "company": "DataSphere",
+    "location": "Bengaluru",
+    "experience": "2-4 years",
+    "description": "Build predictive models, recommendation systems, and customer behavior insights. You will own the full data science lifecycle: exploratory analysis, feature engineering, model tuning, and production evaluation.",
+    "required_skills": ["Python", "Machine Learning", "Statistics", "Pandas", "NumPy", "SQL", "Scikit-Learn"],
+    "preferred_skills": ["Data Visualization", "NLP", "TensorFlow", "PyTorch", "Docker"]
+  },
+  {
+    "id": 7,
+    "title": "Machine Learning Engineer",
+    "company": "AIWorks",
+    "location": "Bengaluru (Hybrid)",
+    "experience": "2-5 years",
+    "description": "Deploy, scale, and monitor state-of-the-art machine learning models in production environments. Work on model serving optimization, continuous training pipelines, and low-latency inference.",
+    "required_skills": ["Python", "Machine Learning", "Deep Learning", "PyTorch", "Docker", "Git", "REST APIs"],
+    "preferred_skills": ["TensorFlow", "MLflow", "Kubernetes", "AWS", "CUDA"]
+  },
+  {
+    "id": 8,
+    "title": "AI Engineer",
+    "company": "NextGen Systems",
+    "location": "Remote",
+    "experience": "1-4 years",
+    "description": "Integrate cutting-edge LLMs and generative AI capabilities into enterprise software products. Build agentic workflows, RAG architectures, prompt pipelines, and evaluation metrics.",
+    "required_skills": ["Python", "Generative AI", "LLMs", "REST APIs", "FastAPI", "Vector Databases", "Git"],
+    "preferred_skills": ["LangChain", "RAG", "Prompt Engineering", "Docker", "OpenAI API"]
+  },
+  {
+    "id": 9,
+    "title": "Software Engineer",
+    "company": "CodeCraft",
+    "location": "Bengaluru",
+    "experience": "1-3 years",
+    "description": "Join our core platform engineering team to build scalable software applications, write clean unit-tested code, optimize algorithmic performance, and collaborate on system architecture.",
+    "required_skills": ["Data Structures", "Algorithms", "Python", "Git", "SQL", "System Design"],
+    "preferred_skills": ["Java", "Docker", "Linux", "CI/CD", "Object-Oriented Programming"]
+  },
+  {
+    "id": 10,
+    "title": "Business Analyst",
+    "company": "EnterprisePulse",
+    "location": "Gurugram",
+    "experience": "1-3 years",
+    "description": "Bridge the gap between technology teams and business executives. Document business requirements, perform process mapping, analyze performance metrics, and prepare executive summaries.",
+    "required_skills": ["Business Analysis", "SQL", "Excel", "Data Analysis", "Communication", "Agile"],
+    "preferred_skills": ["JIRA", "Tableau", "User Stories", "Requirement Gathering"]
+  },
+  {
+    "id": 11,
+    "title": "UI/UX Designer",
+    "company": "DesignPixel Studio",
+    "location": "Bengaluru (Hybrid)",
+    "experience": "1-3 years",
+    "description": "Craft intuitive user experiences, interactive wireframes, and high-fidelity design systems for consumer web and mobile products. Partner with engineers to bring designs into reality.",
+    "required_skills": ["Figma", "UI Design", "UX Research", "Wireframing", "Prototyping", "Design Systems"],
+    "preferred_skills": ["HTML", "CSS", "Usability Testing", "User Personas", "Adobe Creative Suite"]
+  },
+  {
+    "id": 12,
+    "title": "DevOps Engineer",
+    "company": "CloudCore",
+    "location": "Hyderabad",
+    "experience": "2-4 years",
+    "description": "Automate build, test, and release cycles while maintaining cloud infrastructure resilience. Implement robust CI/CD pipelines, container orchestration, and continuous monitoring.",
+    "required_skills": ["Docker", "Kubernetes", "Linux", "CI/CD", "Git", "Bash", "Cloud Computing"],
+    "preferred_skills": ["AWS", "Terraform", "Ansible", "Prometheus", "Python"]
+  },
+  {
+    "id": 13,
+    "title": "Java Developer",
+    "company": "NextGen Systems",
+    "location": "Chennai",
+    "experience": "2-4 years",
+    "description": "Develop high-throughput enterprise backend microservices using Java and Spring Boot. You will ensure thread safety, robust database transactions, and high availability under load.",
+    "required_skills": ["Java", "Spring Boot", "SQL", "REST APIs", "Git", "Maven"],
+    "preferred_skills": ["Microservices", "Hibernate", "Docker", "PostgreSQL", "Kafka"]
+  },
+  {
+    "id": 14,
+    "title": "React Developer",
+    "company": "TechNova Labs",
+    "location": "Bengaluru",
+    "experience": "1-3 years",
+    "description": "Specialized frontend developer focused on high-performance React web applications, state management, complex forms, and reusable component libraries.",
+    "required_skills": ["React", "JavaScript", "HTML", "CSS", "Redux", "Git"],
+    "preferred_skills": ["TypeScript", "Next.js", "Tailwind CSS", "Webpack", "REST APIs"]
+  },
+  {
+    "id": 15,
+    "title": "Data Engineer",
+    "company": "DataSphere",
+    "location": "Pune",
+    "experience": "2-4 years",
+    "description": "Architect and maintain robust data pipelines, ETL workflows, and lakehouse infrastructure. Cleanse and model terabytes of structured and semi-structured business data.",
+    "required_skills": ["Python", "SQL", "ETL", "Data Pipelines", "PostgreSQL", "Git"],
+    "preferred_skills": ["Spark", "Airflow", "Docker", "Kafka", "Data Warehousing", "AWS"]
+  }
+]
