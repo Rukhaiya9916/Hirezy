@@ -1661,7 +1661,7 @@ Associate DevOps Engineer | CloudStream (2024 - Present)
       formData.append("file", file);
 
       try {
-        const response = await fetch("/api/extract-resume", {
+        const response = await fetch("https://hirezy-backend-mawj.onrender.com/api/extract-resume", {
           method: "POST",
           body: formData
         });
@@ -1698,7 +1698,7 @@ Associate DevOps Engineer | CloudStream (2024 - Present)
     // Check Gemini AI Status
     async function checkAiStatus() {
       try {
-        const res = await fetch("/api/ai/test");
+        const res = await fetch("https://hirezy-backend-mawj.onrender.com/api/ai/test");
         const data = await res.json();
         if (data.success && aiStatusText) {
           aiStatusText.innerText = `Gemini AI Connected (${data.model || 'Active'})`;
@@ -1730,7 +1730,7 @@ Associate DevOps Engineer | CloudStream (2024 - Present)
       if (jobsList) jobsList.innerHTML = "";
 
       try {
-        const response = await fetch("/api/match-jobs", {
+        const response = await fetch("https://hirezy-backend-mawj.onrender.com/api/match-jobs", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ resume_text: trimmed })
@@ -1918,7 +1918,7 @@ Associate DevOps Engineer | CloudStream (2024 - Present)
       }
 
       try {
-        const res = await fetch("/api/analyze", {
+        const res = await fetch("https://hirezy-backend-mawj.onrender.com/api/analyze", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -2002,7 +2002,7 @@ Associate DevOps Engineer | CloudStream (2024 - Present)
       }
 
       try {
-        const res = await fetch("/api/skill-proof", {
+        const res = await fetch("https://hirezy-backend-mawj.onrender.com/api/skill-proof", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ skill: skillName })
@@ -2066,7 +2066,7 @@ Associate DevOps Engineer | CloudStream (2024 - Present)
       }
 
       try {
-        const res = await fetch("/api/roadmap", {
+        const res = await fetch("https://hirezy-backend-mawj.onrender.com/api/roadmap", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -2137,7 +2137,7 @@ Associate DevOps Engineer | CloudStream (2024 - Present)
       }
 
       try {
-        const res = await fetch("/api/improve-resume", {
+        const res = await fetch("https://hirezy-backend-mawj.onrender.com/api/improve-resume", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -2212,7 +2212,7 @@ Associate DevOps Engineer | CloudStream (2024 - Present)
       }
 
       try {
-        const res = await fetch("/api/rejection-analyzer", {
+        const res = await fetch("https://hirezy-backend-mawj.onrender.com/api/rejection-analyzer", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -2301,7 +2301,7 @@ Associate DevOps Engineer | CloudStream (2024 - Present)
       }
 
       try {
-        const res = await fetch("/api/interview-questions", {
+        const res = await fetch("https://hirezy-backend-mawj.onrender.com/api/interview-questions", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -2368,7 +2368,7 @@ Associate DevOps Engineer | CloudStream (2024 - Present)
     // Analytics Dashboard
     async function loadAnalytics() {
       try {
-        const res = await fetch("/api/analytics");
+        const res = await fetch("https://hirezy-backend-mawj.onrender.com/api/analytics");
         const data = await res.json();
         if (data.success) {
           const elCount = document.getElementById("statJobsAnalyzed");
