@@ -16,8 +16,8 @@ class TestSkillora(unittest.TestCase):
     def test_root_serves_html(self):
         response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
-        self.assertIn("SKILLORA", response.text)
-        self.assertIn("Career Roadmap", response.text)
+        self.assertIn("HIREZY", response.text)
+        self.assertIn("AI-Powered Career & Hiring Intelligence", response.text)
 
     def test_jobs_json_catalog(self):
         jobs = load_jobs()

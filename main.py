@@ -24,6 +24,8 @@ from schemas import (
     RejectionAnalyzerResponse,
     InterviewQuestionsRequest,
     InterviewQuestionsResponse,
+    InterviewMCQRequest,
+    InterviewMCQResponse,
     SkillProofRequest,
     SkillProofResponse,
     AnalyticsResponse
@@ -35,6 +37,7 @@ from gemini_service import (
     suggest_resume_improvements,
     analyze_rejection_risks,
     generate_interview_questions,
+    generate_interview_mcq,
     generate_skill_proof
 )
 
@@ -223,6 +226,33 @@ def interview_questions(payload: InterviewQuestionsRequest):
         project_questions=res.get("project_questions", []),
         behavioral_questions=res.get("behavioral_questions", []),
         job_specific_questions=res.get("job_specific_questions", [])
+    )
+
+@app.post("/api/interview-mcq", response_model=InterviewMCQResponse)
+def interview_mcq(payload: InterviewMCQRequest):
+    """Generates an objectively gradable MCQ set from a resume and target job."""
+    if not payload.resume_text.strip():
+        raise HTTPException(status_code=400, detail="Resume text cannot be empty.")
+    if not payload.job_title.strip():
+        raise HTTPException(status_code=400, detail="A target job title is required.")
+
+    try:
+        result = generate_interview_mcq(
+            payload.resume_text,
+            payload.job_title,
+            payload.job_description or "",
+            payload.matching_skills,
+            payload.missing_skills
+        )
+    except RuntimeError as error:
+        raise HTTPException(status_code=503, detail=str(error)) from error
+    except ValueError as error:
+        raise HTTPException(status_code=502, detail=str(error)) from error
+
+    return InterviewMCQResponse(
+        success=True,
+        job_title=payload.job_title,
+        questions=result["questions"]
     )
 
 @app.post("/api/skill-proof", response_model=SkillProofResponse)

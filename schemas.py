@@ -132,6 +132,27 @@ class InterviewQuestionsResponse(BaseModel):
     behavioral_questions: List[InterviewQuestion]
     job_specific_questions: List[InterviewQuestion]
 
+class InterviewMCQRequest(BaseModel):
+    resume_text: str = Field(..., min_length=1)
+    job_title: str = Field(..., min_length=1)
+    job_description: Optional[str] = ""
+    matching_skills: List[str] = Field(default_factory=list)
+    missing_skills: List[str] = Field(default_factory=list)
+
+class InterviewMCQQuestion(BaseModel):
+    category: str
+    topic: str
+    question: str
+    options: List[str]
+    correct_index: int = Field(..., ge=0, le=3)
+    correct_answer: str
+    explanation: str
+
+class InterviewMCQResponse(BaseModel):
+    success: bool
+    job_title: str
+    questions: List[InterviewMCQQuestion]
+
 class SkillProofRequest(BaseModel):
     skill: str
 
